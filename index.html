@@ -178,6 +178,25 @@
         .secondary-button:hover {
             background: rgba(0, 212, 255, 0.1);
         }
+
+        /* Small inline link styled as a button (used for footer credit) */
+        .link-button {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            background: var(--secondary);
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-left: 0.4rem;
+            transition: var(--transition);
+        }
+
+        .link-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,212,255,0.18);
+        }
         
         /* Features Section */
         .features {
@@ -957,7 +976,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2023 Super Trades Academy. All rights reserved. | Designed with <i class="fas fa-heart" style="color: var(--accent);"></i> for trading excellence</p>
+                <p>&copy; 2023 Super Trades Academy. All rights reserved. | Designed by <a href="#" class="link-button" aria-label="Benjie">Benjie</a> for trading excellence</p>
             </div>
         </div>
     </footer>
