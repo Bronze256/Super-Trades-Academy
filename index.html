@@ -61,17 +61,18 @@
         
         .logo-icon {
             width: 50px;
-            height:50px;
+            height: 50px;
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            font-size: 2rem;
-            color: var(--secondary);
+            flex-shrink: 0;
         }
-        .logo-icon img(
-            width:100%;
-            height:100%;
-            object-fit:contain;
+        
+        .logo-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
         
         .logo-text {
             font-size: 1.8rem;
@@ -643,7 +644,7 @@
             <div class="header-content">
                 <div class="logo">
                     <div class="logo-icon">
-                         <img src="logo.jpg" alt="Super Trades Academy Logo">
+                        <img src="logo.jpg" alt="Super Trades Academy Logo">
                     </div>
                     <div class="logo-text">Super <span>Trades</span> Academy</div>
                 </div>
@@ -777,6 +778,7 @@
                     <div class="course-content">
                         <h3>Forex Foundations</h3>
                         <p>Perfect for beginners, this course covers all the essentials from market basics to executing your first trade with confidence.</p>
+                        <div class="course-price">$1,200</div>
                         <button class="cta-button">Enroll Now</button>
                     </div>
                 </div>
@@ -785,6 +787,7 @@
                     <div class="course-content">
                         <h3>Advanced Strategy Mastery</h3>
                         <p>Take your trading to the next level with advanced technical analysis, risk management, and proprietary trading strategies.</p>
+                        <div class="course-price">$2,500</div>
                         <button class="cta-button">Enroll Now</button>
                     </div>
                 </div>
@@ -793,6 +796,7 @@
                     <div class="course-content">
                         <h3>Professional Trader Program</h3>
                         <p>Our flagship program designed for those serious about trading as a career, featuring one-on-one mentorship.</p>
+                        <div class="course-price">$5,000</div>
                         <button class="cta-button">Enroll Now</button>
                     </div>
                 </div>
@@ -917,7 +921,7 @@
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook-f"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href=""><i class="fab fa-instagram"></i></a>
                         <a href="#"><i class="fab fa-linkedin-in"></i></a>
                         <a href="#"><i class="fab fa-youtube"></i></a>
                     </div>
@@ -1044,7 +1048,4 @@
         })();
     </script>
 </body>
-
 </html>
-
-
