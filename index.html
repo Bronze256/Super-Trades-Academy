@@ -256,9 +256,10 @@
         }
         
         .course-image {
-            height: 200px;
+            height: 280px;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
         }
         
         .course-content {
@@ -530,6 +531,100 @@
                 padding: 4rem 0;
             }
         }
+        /* Slideshow Styles */
+        .slideshow {
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-right: calc(50% - 50vw);
+            max-width: none;
+            position: relative;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: none;
+            background: #000;
+        }
+
+        /* make the .container inside slideshow span full width */
+        .slideshow > .container {
+            width: 100%;
+            max-width: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .slideshow .slides {
+            display: flex;
+            transition: transform 0.6s ease;
+            will-change: transform;
+        }
+
+        .slideshow .slide {
+            min-width: 100%;
+            height: 100vh;
+            min-height: 420px;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            color: white;
+        }
+
+        .slide-caption {
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);
+            padding: 1rem 1.2rem;
+            border-radius: 8px;
+            max-width: 70%;
+        }
+
+        .slideshow .controls {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            transform: translateY(-50%);
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .slideshow .control-btn {
+            pointer-events: all;
+            background: rgba(0,0,0,0.4);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+
+        .slideshow .control-btn:hover { background: rgba(0,0,0,0.6); transform: scale(1.03); }
+
+        .slideshow .dots {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 12px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .slideshow .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.12s ease;
+        }
+
+        .slideshow .dot.active { background: var(--secondary); transform: scale(1.1); }
     </style>
 </head>
 <body>
@@ -566,6 +661,43 @@
                 <button class="cta-button">Start Your Journey</button>
                 <button class="secondary-button">View Courses</button>
             </div>
+        </div>
+    </section>
+    
+    <!-- Slideshow Section -->
+    <section class="slideshow" aria-label="Highlights">
+        <div class="container">
+            <div class="slides">
+                <div class="slide" style="background-image: url('6.jpg');">
+                    <div class="slide-caption">
+                        <h3>Live Trading Sessions</h3>
+                        <p>Watch our experts analyze and execute trades in real time — learn practical techniques that work.</p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('3.jpg');">
+                    <div class="slide-caption">
+                        <h3>Proven Strategies</h3>
+                        <p>Advanced strategies, risk management, and tools designed to grow your confidence and profitability.</p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('1.jpg');">
+                    <div class="slide-caption">
+                        <h3>Expert Mentorship</h3>
+                        <p>One-on-one mentorship and community support to accelerate your trading career.</p>
+                    </div>
+                </div>
+                <div class="slide" style="background-image: url('5.jpg');">
+                    <div class="slide-caption">
+                        <h3>Career Advancement</h3>
+                        <p>Prepare for professional trading roles with our comprehensive career development programs.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="controls">
+                <button class="control-btn prev" aria-label="Previous slide">&#10094;</button>
+                <button class="control-btn next" aria-label="Next slide">&#10095;</button>
+            </div>
+            <div class="dots" role="tablist" aria-label="Slide dots"></div>
         </div>
     </section>
 
@@ -858,6 +990,52 @@
             el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
             observer.observe(el);
         });
+
+        // Slideshow functionality
+        (function() {
+            const slider = document.querySelector('.slideshow');
+            if (!slider) return;
+
+            const slidesWrap = slider.querySelector('.slides');
+            const slides = Array.from(slidesWrap.querySelectorAll('.slide'));
+            const dotsContainer = slider.querySelector('.dots');
+            const nextBtn = slider.querySelector('.next');
+            const prevBtn = slider.querySelector('.prev');
+            let idx = 0;
+            let timer = null;
+
+            function renderDots() {
+                slides.forEach((_, i) => {
+                    const d = document.createElement('button');
+                    d.className = 'dot' + (i === 0 ? ' active' : '');
+                    d.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+                    d.addEventListener('click', () => { goTo(i); resetTimer(); });
+                    dotsContainer.appendChild(d);
+                });
+            }
+
+            function update() {
+                slidesWrap.style.transform = `translateX(-${idx * 100}%)`;
+                const dots = dotsContainer.querySelectorAll('.dot');
+                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+            }
+
+            function next() { idx = (idx + 1) % slides.length; update(); }
+            function prev() { idx = (idx - 1 + slides.length) % slides.length; update(); }
+            function goTo(i) { idx = i; update(); }
+            function startTimer() { timer = setInterval(next, 5000); }
+            function resetTimer() { clearInterval(timer); startTimer(); }
+
+            if (nextBtn) nextBtn.addEventListener('click', () => { next(); resetTimer(); });
+            if (prevBtn) prevBtn.addEventListener('click', () => { prev(); resetTimer(); });
+
+            slider.addEventListener('mouseenter', () => clearInterval(timer));
+            slider.addEventListener('mouseleave', () => startTimer());
+
+            renderDots();
+            update();
+            startTimer();
+        })();
     </script>
 </body>
 </html>
